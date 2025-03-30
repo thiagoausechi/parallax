@@ -65,6 +65,18 @@ int main(int argc, char **argv) {
 
     scene = new Scene(SCREEN_W, SCREEN_H);
 
+    scene->add_sprite("sky", 0, 0, 1);
+    scene->add_sprite("grass", 0, 0, 2);
+    scene->add_sprite("ground", 0, 0, 2);
+    scene->add_sprite("tree", 0, 0, 2);
+
+    scene->add_sprite("structure", 0, 0, 3);
+    scene->add_sprite("deco_hydrant", 0, 0, 3);
+    scene->add_sprite("deco_flower_pot", 0, 0, 3);
+    scene->add_sprite("deco_trash_can", 0, 0, 3);
+
+    scene->add_sprite("deco_high_grass", 0, 0, 3.5);
+
     while (true) {
         if (redraw && al_is_event_queue_empty(event_queue)) {
             redraw = false;
