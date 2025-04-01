@@ -6,12 +6,19 @@
 #include "layer.h"
 
 class Scene {
+protected:
+    const float SCREEN_WIDTH;
+    const float SCREEN_HEIGHT;
+
     std::vector<std::unique_ptr<ParallaxLayer>> layers;
     float lastTime;
 
 public:
     Scene()
-        : lastTime(0) { ; }
+        : SCREEN_WIDTH(static_cast<float>(al_get_display_width(al_get_current_display())))
+          , SCREEN_HEIGHT(static_cast<float>(al_get_display_height(al_get_current_display())))
+          , lastTime(0) {
+    }
 
     void addLayer(std::unique_ptr<ParallaxLayer> layer) {
         layers.push_back(std::move(layer));
