@@ -62,7 +62,6 @@ int main(int argc, char **argv) {
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
-    al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_start_timer(timer);
 
     Player player;
@@ -131,6 +130,7 @@ int main(int argc, char **argv) {
 
     bool shouldRender = true;
     bool stopRunning = false;
+    ALLEGRO_KEYBOARD_STATE key_state;
 
     while (!stopRunning) {
         if (shouldRender && al_is_event_queue_empty(event_queue)) {
@@ -141,45 +141,19 @@ int main(int argc, char **argv) {
         }
 
         al_wait_for_event(event_queue, &event);
+        al_get_keyboard_state(&key_state);
+
         switch (event.type) {
-            case ALLEGRO_EVENT_KEY_DOWN:
-                switch (event.keyboard.keycode) {
-                    case ALLEGRO_KEY_LEFT:
-                    case ALLEGRO_KEY_A:
-                        keyLeft = true;
-                        break;
-                    case ALLEGRO_KEY_RIGHT:
-                    case ALLEGRO_KEY_D:
-                        keyRight = true;
-                        break;
-                    case ALLEGRO_KEY_UP:
-                    case ALLEGRO_KEY_SPACE:
-                    case ALLEGRO_KEY_W:
-                        keyJump = true;
-                        break;
-                    case ALLEGRO_KEY_ESCAPE:
-                        shouldRender = false;
-                    default: ;
-                }
-                break;
-            case ALLEGRO_EVENT_KEY_UP:
-                switch (event.keyboard.keycode) {
-                    case ALLEGRO_KEY_LEFT:
-                    case ALLEGRO_KEY_A:
-                        keyLeft = false;
-                        break;
-                    case ALLEGRO_KEY_RIGHT:
-                    case ALLEGRO_KEY_D:
-                        keyRight = false;
-                        break;
-                    case ALLEGRO_KEY_UP:
-                    case ALLEGRO_KEY_SPACE:
-                    case ALLEGRO_KEY_W:
-                        keyJump = false;
-                    default: ;
-                }
-                break;
             case ALLEGRO_EVENT_TIMER:
+                keyLeft = al_key_down(&key_state, ALLEGRO_KEY_LEFT) ||
+                          al_key_down(&key_state, ALLEGRO_KEY_A);
+                keyRight = al_key_down(&key_state, ALLEGRO_KEY_RIGHT) ||
+                           al_key_down(&key_state, ALLEGRO_KEY_D);
+                keyJump = al_key_down(&key_state, ALLEGRO_KEY_UP) ||
+                          al_key_down(&key_state, ALLEGRO_KEY_SPACE) ||
+                          al_key_down(&key_state, ALLEGRO_KEY_SPACE);
+                stopRunning = al_key_down(&key_state, ALLEGRO_KEY_ESCAPE);
+
                 scene.update();
                 shouldRender = true;
                 break;
