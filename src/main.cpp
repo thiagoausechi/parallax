@@ -71,8 +71,6 @@ int main(int argc, char **argv) {
     bool keyRight = false;
     bool keyJump = false;
 
-    bool redraw = true;
-
     constexpr auto SPEED_MULTIPLIER = 10.0f;
     constexpr auto SKY_SPEED = 0.1f * SPEED_MULTIPLIER;
     constexpr auto BACKGROUND_SPEED = 0.3f * SPEED_MULTIPLIER;
@@ -131,9 +129,11 @@ int main(int argc, char **argv) {
         std::vector{0.0f}
     ));
 
+    bool shouldRender = true;
+
     while (true) {
-        if (redraw && al_is_event_queue_empty(event_queue)) {
-            redraw = false;
+        if (shouldRender && al_is_event_queue_empty(event_queue)) {
+            shouldRender = false;
             scene.draw();
             al_flip_display();
             al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -180,7 +180,7 @@ int main(int argc, char **argv) {
                 break;
             case ALLEGRO_EVENT_TIMER:
                 scene.update();
-                redraw = true;
+                shouldRender = true;
                 break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 goto end;
