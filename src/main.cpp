@@ -5,6 +5,7 @@
 #include "managers/assets-manager.h"
 #include "scene/scene.h"
 #include "scene/continuous_layer.h"
+#include "scene/player_layer.h"
 #include "scene/spread_layer.h"
 
 #define SCREEN_W 1920
@@ -94,6 +95,7 @@ int main(int argc, char **argv) {
 
     // Middle ground Layers (where the player is)
     scene.addLayer(std::make_unique<ContinuousLayer>(assets.getBitmap("ground"), MIDDLE_GROUND_SPEED, 0));
+    scene.addLayer(std::make_unique<PlayerLayer>(&player, assets.getBitmap("player")));
     scene.addLayer(std::make_unique<ContinuousLayer>(assets.getBitmap("structure"), MIDDLE_GROUND_SPEED, 0));
 
     scene.addLayer(std::make_unique<SpreadLayer>(
