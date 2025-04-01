@@ -17,8 +17,6 @@ int main(int argc, char **argv) {
     ALLEGRO_EVENT event;
     ALLEGRO_TIMER *timer = nullptr;
     AssetManager assets("../assets");
-    Scene scene;
-    bool redraw = true;
 
     if (!al_init()) {
         fprintf(stderr, "failed to initialize allegro!\n");
@@ -65,6 +63,9 @@ int main(int argc, char **argv) {
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_start_timer(timer);
+
+    Scene scene();
+    bool redraw = true;
 
     constexpr auto SPEED_MULTIPLIER = 10.0f;
     constexpr auto SKY_SPEED = 0.1f * SPEED_MULTIPLIER;
