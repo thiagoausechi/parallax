@@ -25,11 +25,6 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    if (!al_install_mouse()) {
-        fprintf(stderr, "failed to install mouse!\n");
-        return -1;
-    }
-
     if (!al_install_keyboard()) {
         fprintf(stderr, "failed to install keyboard!\n");
         return -1;
@@ -68,7 +63,6 @@ int main(int argc, char **argv) {
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
-    al_register_event_source(event_queue, al_get_mouse_event_source());
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_start_timer(timer);
 
