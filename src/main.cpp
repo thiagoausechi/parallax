@@ -64,7 +64,12 @@ int main(int argc, char **argv) {
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_start_timer(timer);
 
-    Scene scene();
+    Player player;
+    Scene scene(&player);
+    bool keyLeft = false;
+    bool keyRight = false;
+    bool keyJump = false;
+
     bool redraw = true;
 
     constexpr auto SPEED_MULTIPLIER = 10.0f;
@@ -136,8 +141,38 @@ int main(int argc, char **argv) {
         switch (event.type) {
             case ALLEGRO_EVENT_KEY_DOWN:
                 switch (event.keyboard.keycode) {
+                    case ALLEGRO_KEY_LEFT:
+                    case ALLEGRO_KEY_A:
+                        keyLeft = true;
+                        break;
+                    case ALLEGRO_KEY_RIGHT:
+                    case ALLEGRO_KEY_D:
+                        keyRight = true;
+                        break;
+                    case ALLEGRO_KEY_UP:
+                    case ALLEGRO_KEY_SPACE:
+                    case ALLEGRO_KEY_W:
+                        keyJump = true;
+                        break;
                     case ALLEGRO_KEY_ESCAPE:
                         goto end;
+                    default: ;
+                }
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                switch (event.keyboard.keycode) {
+                    case ALLEGRO_KEY_LEFT:
+                    case ALLEGRO_KEY_A:
+                        keyLeft = false;
+                        break;
+                    case ALLEGRO_KEY_RIGHT:
+                    case ALLEGRO_KEY_D:
+                        keyRight = false;
+                        break;
+                    case ALLEGRO_KEY_UP:
+                    case ALLEGRO_KEY_SPACE:
+                    case ALLEGRO_KEY_W:
+                        keyJump = false;
                     default: ;
                 }
                 break;
@@ -150,6 +185,7 @@ int main(int argc, char **argv) {
             default:
                 break;
         }
+        player.update(keyLeft, keyRight, keyJump);
     }
 
 end:

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "layer.h"
+#include "objects/player.h"
 
 class Scene {
 protected:
@@ -11,13 +12,13 @@ protected:
     const float SCREEN_HEIGHT;
 
     std::vector<std::unique_ptr<ParallaxLayer>> layers;
-    float lastTime;
+    Player *player;
 
 public:
-    Scene()
+    explicit Scene(Player *p)
         : SCREEN_WIDTH(static_cast<float>(al_get_display_width(al_get_current_display())))
           , SCREEN_HEIGHT(static_cast<float>(al_get_display_height(al_get_current_display())))
-          , lastTime(0) {
+          , player(p) {
     }
 
     void addLayer(std::unique_ptr<ParallaxLayer> layer) {
@@ -25,9 +26,10 @@ public:
     }
 
     void update() const {
-        const auto delta_time = static_cast<float>(al_get_time()) - lastTime;
-        for (auto &layer: layers)
-            layer->update(delta_time);
+        const auto cameraX = player->getX() - SCREEN_WIDTH / 2;
+
+        for (const auto &layer: layers)
+            layer->update(cameraX);
     }
 
     void draw() const {

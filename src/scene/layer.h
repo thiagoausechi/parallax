@@ -12,9 +12,9 @@ public:
           , SCREEN_HEIGHT(static_cast<float>(al_get_display_height(al_get_current_display()))) {
     }
 
-    virtual void update(const float delta_time) = 0;
+    virtual void update(float cameraX) = 0;
 
-    virtual void draw() const =0;
+    virtual void draw() const = 0;
 
     virtual ~ParallaxLayer() = default;
 };
