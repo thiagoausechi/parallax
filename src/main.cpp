@@ -130,8 +130,9 @@ int main(int argc, char **argv) {
     ));
 
     bool shouldRender = true;
+    bool stopRunning = false;
 
-    while (true) {
+    while (!stopRunning) {
         if (shouldRender && al_is_event_queue_empty(event_queue)) {
             shouldRender = false;
             scene.draw();
@@ -157,7 +158,7 @@ int main(int argc, char **argv) {
                         keyJump = true;
                         break;
                     case ALLEGRO_KEY_ESCAPE:
-                        goto end;
+                        shouldRender = false;
                     default: ;
                 }
                 break;
@@ -183,14 +184,14 @@ int main(int argc, char **argv) {
                 shouldRender = true;
                 break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
-                goto end;
+                stopRunning = true;
+                break;
             default:
                 break;
         }
         player.update(keyLeft, keyRight, keyJump);
     }
 
-end:
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
