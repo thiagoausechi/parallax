@@ -45,6 +45,7 @@ public:
 
     [[nodiscard]] float getX() const { return x; }
     [[nodiscard]] float getY() const { return y; }
+    [[nodiscard]] static float getSpeed() { return SPEED; }
 
     void resetJump() { isJumping = false; }
 };
